@@ -81,6 +81,8 @@ const warnings = [];
 const config = {
   root: ROOT,
   env: str('NODE_ENV', 'development'),
+  // Datos sinteticos en lugar de Meta y la tienda. No toca la red.
+  demo: bool('DEMO_MODE', false),
 
   server: {
     port: num('PORT', 3000),

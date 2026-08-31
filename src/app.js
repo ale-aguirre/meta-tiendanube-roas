@@ -8,6 +8,8 @@ const { createLogger } = require('./lib/logger');
 const { errorHandler } = require('./lib/express');
 const { createStoreAdapter } = require('./adapters');
 const { createMetaService } = require('./services/meta');
+const { createDemoStoreAdapter } = require('./demo/store');
+const { createDemoMetaService } = require('./demo/meta');
 const { createConversionsService } = require('./services/conversions');
 const { createAiService } = require('./services/ai');
 
@@ -27,8 +29,12 @@ const { healthRoutes } = require('./routes/health');
 function createApp(config, overrides = {}) {
   const logger = overrides.logger || createLogger({ dir: config.paths.logDir, file: 'dashboard.log' });
   const cache = overrides.cache || new TtlCache({ ttlMs: config.cache.ttlMs });
-  const store = overrides.store || createStoreAdapter(config);
-  const meta = overrides.meta || createMetaService({ config, logger });
+  // Modo demo: las dos integraciones se reemplazan por datos sintéticos. Sirve
+  // para ver el dashboard funcionando sin sacar un solo token, y para sacar
+  // capturas sin exponer los números de un negocio real.
+  const demo = config.demo === true;
+  const store = overrides.store || (demo ? createDemoStoreAdapter() : createStoreAdapter(config));
+  const meta = overrides.meta || (demo ? createDemoMetaService() : createMetaService({ config, logger }));
   const conversions = overrides.conversions || createConversionsService({ config, metaService: meta, logger });
   const ai = overrides.ai || createAiService({ config, cache });
 

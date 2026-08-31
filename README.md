@@ -15,6 +15,19 @@ Node + Express, sin build step. Un `.env`, `npm start`, y anda.
 **Stack:** Node ≥20, Express, HTML plano con Tailwind y Chart.js por CDN.
 Cero dependencias de runtime más allá de `express` y `dotenv`.
 
+![La pestaña Resumen: el ROAS real, la comparación contra el período anterior, y el bloque Qué mirar](docs/img/resumen.png)
+
+## Probarlo sin sacar un solo token
+
+```bash
+npm install
+DEMO_MODE=1 npm start
+```
+
+Datos sintéticos, deterministas, sin red. Es lo que se ve en la captura de
+arriba. Sirve para decidir si vale la pena configurarlo antes de pelearte con
+el Business Manager de Meta.
+
 ---
 
 ## El problema

@@ -121,7 +121,17 @@ Es en memoria: reiniciar el proceso lo vacía. No persiste nada en disco.
 
 | Variable | Default | Para qué |
 |---|---|---|
+| `DEMO_MODE` | `false` | Datos sintéticos en lugar de Meta y la tienda |
 | `FEATURE_INFER_GENDER` | `false` | Infiere género por nombre de pila |
+
+Con **`DEMO_MODE=1`** se reemplazan las dos integraciones por generadores
+sintéticos (`src/demo/`) y no se toca la red. Los números son deterministas: la
+misma fecha da siempre lo mismo, así una captura se puede repetir y un bug en la
+interfaz no se confunde con ruido del generador.
+
+No hay nada real ahí: productos, campañas y compradores están inventados, y los
+emails usan `ejemplo.com`, que la IANA reserva justamente para esto.
+
 
 Apagada por defecto, y conviene dejarla así salvo que sepas para qué la querés.
 Es una inferencia sobre datos personales contra un diccionario de nombres
