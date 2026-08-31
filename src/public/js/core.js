@@ -21,6 +21,7 @@ const CONFIG = {
   spendLabel: 'Gasto',
   features: { inferGender: false },
   integrations: null,
+  demo: false,
 };
 
 /**
@@ -59,6 +60,7 @@ async function cargarConfig() {
     CONFIG.locale = health.locale || CONFIG.locale;
     CONFIG.features = health.features || CONFIG.features;
     CONFIG.integrations = health.integrations || null;
+    CONFIG.demo = health.demo === true;
     CONFIG.revenueLabel = 'Ingresos ' + CONFIG.currency;
     CONFIG.spendLabel = 'Gasto ' + CONFIG.currency;
   } catch (e) {
@@ -76,6 +78,10 @@ function aplicarConfig() {
     if (el.dataset.base === undefined) el.dataset.base = el.textContent.trim();
     el.textContent = valor(el.dataset.base);
   });
+
+  // Si los datos son inventados hay que decirlo en la pantalla, no solo en el
+  // README: alguien puede estar mirando una demo publicada sin saberlo.
+  if (CONFIG.demo && $('modoChip')) $('modoChip').textContent = 'Datos de ejemplo';
 
   set('[data-business-name]', () => CONFIG.business);
   set('[data-business-initial]', () => CONFIG.business.trim().charAt(0).toUpperCase());

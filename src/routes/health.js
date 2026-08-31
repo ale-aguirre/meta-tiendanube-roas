@@ -16,6 +16,7 @@ function healthRoutes({ config, meta, store, conversions, ai, startedAt }) {
     res.json({
       status: 'ok',
       uptimeSeconds: Math.round((Date.now() - startedAt) / 1000),
+      demo: config.demo === true,
       business: config.business.name,
       currency: config.business.currency,
       locale: config.business.locale,

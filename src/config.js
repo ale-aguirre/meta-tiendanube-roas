@@ -153,23 +153,29 @@ const config = {
 
 /* ── validacion: lo que falta se dice al arrancar, no cuando falla ─────── */
 
-if (!config.meta.accessToken) {
-  warnings.push('Falta META_ACCESS_TOKEN — las secciones de Meta Ads van a devolver 503. Ver docs/setup.md#meta.');
-}
-if (!config.store.accessToken || !config.store.storeId) {
-  warnings.push('Falta TIENDANUBE_ACCESS_TOKEN o TIENDANUBE_STORE_ID — las secciones de la tienda van a devolver 503. Ver docs/setup.md#tienda.');
-}
-if (!config.meta.pixelId) {
-  warnings.push('Falta META_PIXEL_ID — el webhook de conversiones queda desactivado (no se envia nada a Meta).');
-}
-if (config.meta.pixelId && !config.store.clientSecret) {
-  warnings.push('Falta TIENDANUBE_CLIENT_SECRET — el webhook acepta cualquier POST sin verificar la firma. Ver docs/webhook.md#firma.');
-}
-if (!config.business.siteUrl) {
-  warnings.push('Falta SITE_URL — los eventos de la Conversions API salen sin event_source_url.');
-}
-if (config.ai.enabled && !config.ai.apiKey) {
-  warnings.push('Falta OPENROUTER_API_KEY — /api/analyze devuelve 503. El resto del dashboard anda igual.');
+// En demo no hace falta ninguna credencial. Listar las que faltan seria
+// contradecir al modo: alguien eligio justamente no configurar nada.
+if (config.demo) {
+  warnings.push('MODO DEMO: datos sintéticos, no se consulta ninguna API. Se apaga con DEMO_MODE=0.');
+} else {
+  if (!config.meta.accessToken) {
+    warnings.push('Falta META_ACCESS_TOKEN — las secciones de Meta Ads van a devolver 503. Ver docs/setup.md#meta.');
+  }
+  if (!config.store.accessToken || !config.store.storeId) {
+    warnings.push('Falta TIENDANUBE_ACCESS_TOKEN o TIENDANUBE_STORE_ID — las secciones de la tienda van a devolver 503. Ver docs/setup.md#tienda.');
+  }
+  if (!config.meta.pixelId) {
+    warnings.push('Falta META_PIXEL_ID — el webhook de conversiones queda desactivado (no se envia nada a Meta).');
+  }
+  if (config.meta.pixelId && !config.store.clientSecret) {
+    warnings.push('Falta TIENDANUBE_CLIENT_SECRET — el webhook acepta cualquier POST sin verificar la firma. Ver docs/webhook.md#firma.');
+  }
+  if (!config.business.siteUrl) {
+    warnings.push('Falta SITE_URL — los eventos de la Conversions API salen sin event_source_url.');
+  }
+  if (config.ai.enabled && !config.ai.apiKey) {
+    warnings.push('Falta OPENROUTER_API_KEY — /api/analyze devuelve 503. El resto del dashboard anda igual.');
+  }
 }
 if (config.server.allowedOrigins.includes('*')) {
   warnings.push('ALLOWED_ORIGINS=* deja que cualquier sitio lea tus métricas desde el navegador. Usá orígenes explícitos.');
