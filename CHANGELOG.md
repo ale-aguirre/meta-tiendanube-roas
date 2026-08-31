@@ -60,6 +60,18 @@ uno de estos bugs se veía exactamente igual que si no existiera.
   `expires_at: 0`; la resta contra el reloj daba un número negativo enorme, así
   que la condición de renovar siempre era verdadera.
 
+### La primera vez
+
+Quien clonaba el repo y lo arrancaba sin configurar nada veía un banner de error
+sobre una pantalla vacía, con un texto que afirmaba que el acceso a Meta **se
+había vencido**. El regex que elegía ese texto matcheaba la palabra `token`
+dentro de `falta META_ACCESS_TOKEN`: nunca hubo token que vencer, y el mensaje
+mandaba a renovar algo que jamás existió.
+
+Ahora la home detecta que faltan las fuentes del cruce y muestra los primeros
+pasos: qué integración falta, para qué sirve cada una, cuáles son opcionales, y
+en qué archivo de `docs/` está explicada. No se piden datos que van a dar 503.
+
 ### Seguridad
 
 - **El webhook no verificaba nada.** El endpoint está abierto a internet y lo que

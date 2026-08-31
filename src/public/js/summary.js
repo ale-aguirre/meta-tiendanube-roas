@@ -422,9 +422,17 @@ function resumenEnError(msg) {
   $('homeRules')?.classList.add('hidden');
   $('homeCharts').classList.add('hidden');
   $('homeErrorWhat').textContent = msg;
-  $('homeErrorFix').textContent = /token|OAuth|expired|session/i.test(msg)
-    ? 'Parece que se venció el acceso a Meta. Hay que renovar el token, está explicado en docs/setup.md.'
-    : 'Probá el botón de actualizar. Si sigue igual, el detalle está en la consola del servidor.';
+  // Ojo con el mensaje: 'falta META_ACCESS_TOKEN' contiene la palabra token y
+  // hacia que dijera que el acceso se habia vencido. Lo que distingue un token
+  // caido de uno que nunca existio son las palabras del error, no que aparezca
+  // 'token'.
+  const vencido = /(expir|caduc|venci|invalid|session has)/i.test(msg);
+  const sinConfigurar = /no está configurad|no esta configurad|falta [A-Z_]+/i.test(msg);
+  $('homeErrorFix').textContent = vencido
+    ? 'El acceso a Meta dejó de ser válido. Cómo renovarlo: docs/setup.md#meta.'
+    : sinConfigurar
+      ? 'Falta completar esa credencial en el .env. Los pasos están en docs/setup.md.'
+      : 'Probá el botón de actualizar. Si sigue igual, el detalle está en la consola del servidor.';
   $('homeError').classList.remove('hidden');
 }
 

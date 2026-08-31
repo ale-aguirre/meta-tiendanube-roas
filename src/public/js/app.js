@@ -6,9 +6,50 @@
  * comparten el mismo scope global. Cada nombre se declara una sola vez.
  */
 
+/**
+ * Dibuja la pantalla de primeros pasos y apaga el resto.
+ *
+ * Es lo que ve todo el que clona el repo antes de configurar nada. Antes eso
+ * era un banner de error rojo sobre una pantalla vacía, que se lee como "esto
+ * está roto" y no como "te falta el paso 1".
+ */
+function pintarPrimerosPasos() {
+  const estado = CONFIG.integrations || {};
+
+  $('homeSetupList').innerHTML = INTEGRACIONES.map((item) => {
+    const listo = Boolean(estado[item.clave]?.configured);
+    const titulo = item.clave === 'store' && estado.store?.name ? estado.store.name : item.titulo;
+    return `<div class="flex items-start gap-5 py-5">
+      <span class="shrink-0 mt-0.5 text-[11px] uppercase tracking-widest font-semibold ${listo ? 'text-emerald-700' : 'text-slate-400'}" style="width:4.5rem">
+        ${listo ? 'Listo' : 'Falta'}
+      </span>
+      <div class="min-w-0 flex-grow">
+        <p class="font-semibold text-slate-900">${titulo}${item.necesaria ? '' : ' <span class="text-slate-400 font-normal">· opcional</span>'}</p>
+        <p class="text-sm text-slate-500 mt-1">${item.para}</p>
+      </div>
+      ${listo ? '' : `<code class="shrink-0 text-xs text-slate-400 whitespace-nowrap">${item.doc}</code>`}
+    </div>`;
+  }).join('');
+
+  $('homeSetup').classList.remove('hidden');
+  ['homeLoading', 'homeError', 'homeVerdict', 'homeActions', 'homeRules', 'homeCharts', 'homeGoNumbers']
+    .forEach((id) => $(id)?.classList.add('hidden'));
+
+  $('lastUpdated').textContent = 'Sin conectar';
+  const sel = $('accountSelect');
+  // value vacío a propósito: loadData() corta cuando no hay accountId. Con el
+  // texto como valor, tocar Actualizar o un período disparaba un 400.
+  sel.innerHTML = '<option value="">Sin cuenta</option>';
+  sel.disabled = true;
+}
+
 async function init() {
   try {
     await cargarConfig();
+    // Si falta una de las dos fuentes del cruce no tiene sentido pedir datos:
+    // serían dos 503 y un error donde corresponde una guía.
+    if (faltaLoEsencial()) return pintarPrimerosPasos();
+
     const res = await fetch('/api/accounts');
     const data = await res.json();
     if (data.error) throw new Error(data.error);

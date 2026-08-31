@@ -110,6 +110,22 @@
     </div>
   </div>
 
+  <!-- Primera vez: falta conectar algo.
+       Es la pantalla que ve TODO el que clona el repo, asi que no puede ser un
+       error. Un error dice "se rompio"; esto dice "falta el paso 1". -->
+  <div id="homeSetup" class="hidden rounded-2xl bg-white border border-slate-200 shadow-sm p-6 sm:p-9">
+    <p class="text-[11px] uppercase tracking-[0.18em] text-slate-400 font-semibold">Primeros pasos</p>
+    <h2 class="text-3xl font-bold text-slate-950 mt-3">Falta conectar las cuentas.</h2>
+    <p class="text-base text-slate-500 mt-3 max-w-xl">
+      El ROAS real sale de cruzar dos fuentes. Hasta que estén las dos, no hay número que mostrar.
+    </p>
+    <div id="homeSetupList" class="mt-8 divide-y divide-slate-100 border-t border-slate-100"></div>
+    <p class="text-sm text-slate-400 mt-7">
+      Todo se configura en el archivo <span class="font-semibold text-slate-500">.env</span> de la raíz.
+      Al arrancar, el servidor lista en consola exactamente lo que falta.
+    </p>
+  </div>
+
   <!-- Resumen principal.
        Cada dato aparece UNA vez. El ROAS estaba dos veces (titular + tarjeta) y
        habia dos comparaciones distintas, las dos rotuladas "vs periodo

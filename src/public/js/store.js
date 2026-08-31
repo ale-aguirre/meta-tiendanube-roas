@@ -97,9 +97,11 @@ function fmtMes(key) {
 async function loadTiendaAnalytics() {
   try {
     const r = await fetch('/api/store/analytics');
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    const d = await r.json();
+    const d = await r.json().catch(() => ({}));
+    // El backend responde 503 con el motivo y la variable que falta. Cortar en
+    // !r.ok tiraba ese mensaje y dejaba 'HTTP 503', que no le sirve a nadie.
     if (d.error) throw new Error(d.error);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
     renderTiendaAnalytics(d);
     tnaLoaded = true;
   } catch (e) {

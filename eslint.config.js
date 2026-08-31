@@ -45,6 +45,9 @@ module.exports = [
         // Declarados en un archivo y usados en otro. Si agregás uno nuevo que
         // cruza archivos, sumalo acá: es la única red que hay sin bundler.
         CONFIG: 'writable',
+        INTEGRACIONES: 'readonly',
+        faltaLoEsencial: 'readonly',
+        pintarPrimerosPasos: 'readonly',
         cargarConfig: 'readonly',
         aplicarConfig: 'readonly',
         $: 'readonly',

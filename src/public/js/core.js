@@ -20,7 +20,33 @@ const CONFIG = {
   revenueLabel: 'Ingresos',
   spendLabel: 'Gasto',
   features: { inferGender: false },
+  integrations: null,
 };
+
+/**
+ * Las cuatro integraciones, en el orden en que conviene resolverlas y con el
+ * ancla del doc que explica cada una.
+ *
+ * `necesaria` marca las dos sin las cuales no hay ROAS: sin ellas la pantalla
+ * de primeros pasos reemplaza al resumen en vez de mostrar un error.
+ */
+const INTEGRACIONES = [
+  { clave: 'meta', titulo: 'Meta Ads', necesaria: true, doc: 'docs/setup.md#meta',
+    para: 'De acá sale el gasto publicitario y las campañas.' },
+  { clave: 'store', titulo: 'Tu tienda', necesaria: true, doc: 'docs/setup.md#tienda',
+    para: 'De acá sale la plata que entró de verdad.' },
+  { clave: 'conversionsApi', titulo: 'Conversions API', necesaria: false, doc: 'docs/webhook.md',
+    para: 'Le manda a Meta las compras que el píxel del navegador pierde.' },
+  { clave: 'ai', titulo: 'Análisis escrito', necesaria: false, doc: 'docs/setup.md#ia',
+    para: 'Opcional. Las reglas del resumen funcionan sin esto.' },
+];
+
+/** ¿Están las dos fuentes del cruce? Sin alguna, no hay ROAS que calcular. */
+function faltaLoEsencial() {
+  const i = CONFIG.integrations;
+  if (!i) return false;
+  return INTEGRACIONES.some((x) => x.necesaria && !i[x.clave]?.configured);
+}
 
 async function cargarConfig() {
   try {
@@ -32,6 +58,7 @@ async function cargarConfig() {
     CONFIG.currency = health.currency || CONFIG.currency;
     CONFIG.locale = health.locale || CONFIG.locale;
     CONFIG.features = health.features || CONFIG.features;
+    CONFIG.integrations = health.integrations || null;
     CONFIG.revenueLabel = 'Ingresos ' + CONFIG.currency;
     CONFIG.spendLabel = 'Gasto ' + CONFIG.currency;
   } catch (e) {
