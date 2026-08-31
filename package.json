@@ -1,0 +1,51 @@
+{
+  "name": "meta-tiendanube-roas",
+  "version": "1.0.0",
+  "description": "Cruza Meta Ads con tu tienda para dar el ROAS real: plata cobrada dividido gasto publicitario, en vez de la atribución de Meta",
+  "main": "src/app.js",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "test": "node --test",
+    "test:watch": "node --test --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "check": "npm run lint && npm test",
+    "setup:tiendanube": "node scripts/tiendanube-oauth.js",
+    "token:meta": "node scripts/meta-token.js"
+  },
+  "keywords": [
+    "meta-ads",
+    "facebook-ads",
+    "tiendanube",
+    "nuvemshop",
+    "roas",
+    "conversions-api",
+    "ecommerce",
+    "dashboard",
+    "analytics"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ale-aguirre/meta-tiendanube-roas.git"
+  },
+  "files": [
+    "src",
+    "scripts",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "eslint": "^9.39.5",
+    "globals": "^17.11.0"
+  }
+}

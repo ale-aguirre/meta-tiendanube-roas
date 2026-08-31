@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node: ['20', '22']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Tests
+        run: npm test
+
+      # Los tests no tocan la red y no necesitan credenciales, pero el proceso
+      # tiene que levantar sin ninguna: es el primer estado que ve cualquiera
+      # que clone el repo.
+      - name: Arranca sin credenciales
+        run: |
+          NO_OPEN=1 PORT=3999 node src/server.js &
+          for i in $(seq 1 20); do
+            curl -sf http://127.0.0.1:3999/api/health && break || sleep 0.5
+          done
+          curl -sf http://127.0.0.1:3999/api/health | grep -q '"status":"ok"'
+
+  secretos:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ningún archivo de credenciales versionado
+        run: |
+          if git ls-files | grep -E '(^|/)\.env$|token.*\.json$|dashboard-config\.json$'; then
+            echo "Hay credenciales versionadas."
+            exit 1
+          fi
+          echo "Limpio."

@@ -1,0 +1,7 @@
+# LF en el repositorio, siempre. Sin esto, un contribuidor en Windows genera un
+# diff de 3.000 líneas al guardar un archivo que no tocó.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.ico binary

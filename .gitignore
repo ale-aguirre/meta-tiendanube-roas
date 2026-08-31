@@ -1,0 +1,33 @@
+# ── Credenciales: nunca, bajo ninguna circunstancia ──────────────────────
+.env
+.env.*
+!.env.example
+credentials/*
+!credentials/.gitkeep
+!credentials/README.md
+*token*.json
+dashboard-config.json
+
+# ── Datos de negocio y datos personales de clientes ──────────────────────
+# Las órdenes traen nombre, email y dirección de gente real.
+*.csv
+logs/
+*.log
+all_orders.json
+orders*.json
+insights*.json
+ad_insights*.json
+all_campaigns.json
+productos*.json
+
+# ── Ruido ────────────────────────────────────────────────────────────────
+node_modules/
+coverage/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+
+# Estado local de herramientas
+.atl/

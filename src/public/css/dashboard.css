@@ -1,0 +1,173 @@
+    /* ── Tokens ────────────────────────────────────────────────────────────
+       Antes cada margen era un numero suelto de Tailwind elegido a ojo. Una
+       escala unica hace que el ritmo vertical se repita en vez de improvisarse
+       en cada bloque. */
+    :root {
+      --blue: #1877F2;
+      --indigo: #4F46E5;
+      --purple: #7C3AED;
+      --green: #059669;
+      --red: #DC2626;
+      --amber: #D97706;
+
+      /* Escala de espaciado. Todo margen o padding sale de aca. */
+      --s-1: .25rem;  --s-2: .5rem;   --s-3: .75rem;  --s-4: 1rem;
+      --s-6: 1.5rem;  --s-8: 2rem;    --s-12: 3rem;   --s-16: 4rem;
+
+      /* Una sola curva de movimiento en toda la app. */
+      --ease: cubic-bezier(.34, 1.3, .64, 1);
+      --dur: .35s;
+    }
+
+    *, body { font-family: 'Inter', system-ui, sans-serif; }
+
+    /* Todo numero va en monoespaciada con cifras de ancho fijo: si no, los
+       digitos bailan mientras se animan y el ojo lee ruido. */
+    .num, .tabular-nums, [class*="tabular"] {
+      font-variant-numeric: tabular-nums;
+      font-feature-settings: "tnum" 1;
+    }
+
+    body {
+      background: #F8FAFC;
+      color: #0F172A;
+    }
+
+    /* Animations */
+    @keyframes spin    { to { transform: rotate(360deg); } }
+    @keyframes fadeUp  { from { opacity:0; transform:translateY(12px); } to { opacity:1; transform:none; } }
+    @keyframes pulse   { 0%,100% { opacity:1; } 50% { opacity:.4; } }
+    @keyframes shimmer { from { background-position: -400px 0; } to { background-position: 400px 0; } }
+
+    .spin    { animation: spin 1s linear infinite; }
+    .fade-up { animation: fadeUp var(--dur) var(--ease) both; }
+
+    /* Hay gente que marea con el movimiento, y el sistema operativo ya lo
+       sabe. Ignorarlo no es un detalle de accesibilidad, es romperle la
+       pantalla a alguien. */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+    }
+
+    .pulse-ring {
+      animation: pulse 2s ease-in-out infinite;
+      box-shadow: 0 0 0 0 rgba(5,150,105,.4);
+    }
+
+    /* Bar transition */
+    .bar { transition: width 1.4s cubic-bezier(0.4,0,0.2,1); }
+
+    /* Card hover */
+    .card-hover {
+      transition: box-shadow .15s ease;
+      cursor: default;
+    }
+    .card-hover:hover {
+      box-shadow: 0 2px 8px rgba(0,0,0,.06) !important;
+    }
+
+    /* Shimmer skeleton */
+    .skeleton {
+      background: linear-gradient(90deg, #E8ECFF 25%, #F3F5FF 50%, #E8ECFF 75%);
+      background-size: 400px 100%;
+      animation: shimmer 1.4s ease-in-out infinite;
+      border-radius: 8px;
+    }
+
+    /* Header */
+    .header-bg {
+      background: #1E40AF;
+    }
+
+    /* KPI card backgrounds */
+    .card-blue   { background: #fff; border: 1px solid #E2E8F0; border-left: 3px solid #3B82F6; }
+    .card-green  { background: #fff; border: 1px solid #E2E8F0; border-left: 3px solid #10B981; }
+    .card-purple { background: #fff; border: 1px solid #E2E8F0; border-left: 3px solid #8B5CF6; }
+    .card-indigo { background: #fff; border: 1px solid #E2E8F0; border-left: 3px solid #6366F1; }
+    .card-teal   { background: #fff; border: 1px solid #E2E8F0; border-left: 3px solid #14B8A6; }
+    .card-slate  { background: #fff; border: 1px solid #E2E8F0; border-left: 3px solid #64748B; }
+    .card-red    { background: #fff; border: 1px solid #E2E8F0; border-left: 3px solid #EF4444; }
+
+    .icon-blue   { background: #DBEAFE; color: #1D4ED8; }
+    .icon-green  { background: #D1FAE5; color: #065F46; }
+    .icon-purple { background: #EDE9FE; color: #5B21B6; }
+    .icon-indigo { background: #E0E7FF; color: #3730A3; }
+    .icon-teal   { background: #CCFBF1; color: #0F766E; }
+    .icon-slate  { background: #E2E8F0; color: #475569; }
+    .icon-red    { background: #FFE4E6; color: #9F1239; }
+
+    /* Number styling */
+    .kpi-number { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+
+    /* Funnel */
+    .funnel-step {
+      position: relative;
+      transition: all .3s ease;
+    }
+    .funnel-step:hover .funnel-bar { filter: brightness(1.05); }
+
+    /* Table */
+    .data-row { transition: background .15s; }
+    .data-row:hover { background: #F5F7FF; }
+
+    /* Badge */
+    .badge-active  { background:#DCFCE7; color:#166534; border:1px solid #BBF7D0; }
+    .badge-paused  { background:#F1F5F9; color:#64748B; border:1px solid #E2E8F0; }
+
+    /* Date pill buttons */
+    .date-pill {
+      white-space: nowrap;
+      transition: background .15s ease, color .15s ease;
+    }
+    .date-pill.active {
+      background: white;
+      color: #1D4ED8;
+      font-weight: 700;
+      box-shadow: 0 1px 3px rgba(0,0,0,.08);
+    }
+    .date-pill:not(.active) { color: rgba(255,255,255,.72); }
+    .date-pill:not(.active):hover { color: white; background: rgba(255,255,255,.14); }
+
+    /* Select */
+    select {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236B7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 10px center;
+      background-size: 18px;
+      padding-right: 36px !important;
+    }
+
+    /* Tab buttons */
+    .tab-btn { color: rgba(255,255,255,.60); }
+    .tab-btn:hover { color: white; background: rgba(255,255,255,.10); }
+    .tab-btn.active { background: white; color: #1D4ED8; box-shadow: 0 1px 3px rgba(0,0,0,.10); }
+
+    /* Home summary */
+    .metric-tile {
+      transition: border-color .15s ease;
+    }
+    .metric-tile:hover { border-color: #CBD5E1; }
+    .summary-tab.active { background: #0F172A; color: white; }
+    .summary-tab:not(.active) { background: white; color: #64748B; border: 1px solid #E2E8F0; }
+
+    /* Tienda Analytics charts */
+    .tn-card { background: white; border-radius: 1rem; border: 1px solid #E2E8F0; padding: 1.25rem; }
+    .tn-kpi-num { font-size: 1.75rem; font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; }
+    .province-bar { height: 28px; border-radius: 6px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+    .prod-bar { height: 22px; border-radius: 5px; transition: width 1.2s cubic-bezier(.4,0,.2,1); }
+
+    /* Scrollbar - visible y personalizada */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #EEF2FF; border-radius: 99px; }
+    ::-webkit-scrollbar-thumb { background: #A5B4FC; border-radius: 99px; border: 2px solid #EEF2FF; }
+    ::-webkit-scrollbar-thumb:hover { background: #6366F1; }
+    ::-webkit-scrollbar-corner { background: transparent; }
+  
+@keyframes dibujar { to { stroke-dashoffset: 0; } }
+@keyframes crecer  { to { width: var(--w); } }
